@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Rubyup</title>
+    <title>Ruby Up!</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,6 +10,13 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="container mt-3">
+      <h1>Ruby Up!</h1>
+      <p>
+        <%= link_to 'Repositories', repositories_path %>
+        <%= link_to 'Jobs', jobs_path %>
+      </p>
+      <%= yield %>
+    </div>
   </body>
 </html>

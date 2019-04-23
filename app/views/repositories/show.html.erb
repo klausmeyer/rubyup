@@ -1,0 +1,16 @@
+<h3>Repository</h3>
+
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <td><%= @repository.name %></td>
+  </tr>
+  <tr>
+    <th>URL</th>
+    <td><%= @repository.url %></td>
+  </tr>
+</table>
+
+<h3>Jobs</h3>
+
+<%= render 'jobs/list' %>
