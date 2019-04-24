@@ -34,7 +34,8 @@ job1 = Job.create!(
       'Gemfile',
       'Dockerfile'
     ]
-  }
+  },
+  state: 'created'
 ) if repo1.jobs.count < 1
 
 job2 = Job.create!(
@@ -50,7 +51,8 @@ job2 = Job.create!(
       'Gemfile',
       'Dockerfile'
     ]
-  }
+  },
+  state: 'completed'
 ) if repo1.jobs.count < 2
 
 job3 = Job.create!(
@@ -66,5 +68,6 @@ job3 = Job.create!(
       'Gemfile',
       'Dockerfile'
     ]
-  }
+  },
+  state: 'failed'
 ) if repo2.jobs.empty?

@@ -1,1 +1,18 @@
-<%= debug @job.attributes %>
+<table class="table table-striped">
+  <tr>
+    <th>ID</th>
+    <td><%= @job.id %></td>
+  </tr>
+  <tr>
+    <th>Repository</th>
+    <td><%= @job.repository.name %></td>
+  </tr>
+  <tr>
+    <th>Config</th>
+    <td><code><%= simple_format @job.config.to_yaml %></code></td>
+  </tr>
+  <tr>
+    <th>State</th>
+    <td><%= state_badge @job.state %></td>
+  </tr>
+</table>

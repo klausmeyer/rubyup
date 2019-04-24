@@ -13,8 +13,11 @@
     <div class="container mt-3">
       <h1>Ruby Up!</h1>
       <p>
-        <%= link_to 'Repositories', repositories_path %>
-        <%= link_to 'Jobs', jobs_path %>
+        <%= link_to 'Repositories', repositories_path, class: params[:controller] == 'repositories' && 'font-weight-bold' %>
+        |
+        <%= link_to 'Jobs', jobs_path, class: params[:controller] == 'jobs' && 'font-weight-bold' %>
+        |
+        <%= link_to 'Sidekiq', sidekiq_web_path, data: { turbolinks: false } %>
       </p>
       <%= yield %>
     </div>

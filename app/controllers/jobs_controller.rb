@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   def index
-    @jobs = Job.includes(:repository).all
+    @jobs = Job.includes(:repository).newest_first
   end
 
   def show

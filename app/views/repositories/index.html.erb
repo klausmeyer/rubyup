@@ -1,23 +1,31 @@
 <% if @repositories.any? %>
   <table class="table table-striped">
+    <colgroup>
+      <col width="10%">
+      <col width="35%">
+      <col width="35%">
+      <col width="20%">
+    </colgroup>
     <tr>
       <th><input type="checkbox"></th>
-      <th>ID</th>
       <th>Name</th>
       <th>Last Job</th>
+      <th>Actions</th>
     </tr>
     <% @repositories.each do |repo| %>
       <tr>
         <td><input type="checkbox"></td>
-        <td><%= repo.id %></td>
-        <td><%= link_to repo.name, repo %></td>
+        <td><%= repo.name %></td>
         <td>
           <% if repo.job %>
-            <span class="badge badge-secondary"><%= link_to repo.job.state, repo.job, class: "text-light" %></span>
+            <%= link_to repo.job, class: 'text-light' do %>
+              <%= state_badge repo.job.state %>
+            <% end %>
           <% else %>
             -
           <% end %>
         </td>
+        <td><%= link_to 'Show', repo %></td>
       </tr>
     <% end %>
   </table>

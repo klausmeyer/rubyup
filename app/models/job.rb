@@ -5,8 +5,11 @@ class Job < ApplicationRecord
 
   validates :repository, presence: true
   validates :config,     presence: true
+  validates :state, inclusion: { in: %w(created completed failed) }
 
   after_initialize :set_defaults
+
+  scope :newest_first, -> { order(id: :desc) }
 
   private
 

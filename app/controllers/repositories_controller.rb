@@ -5,6 +5,6 @@ class RepositoriesController < ApplicationController
 
   def show
     @repository = Repository.find params[:id]
-    @jobs       = @repository.jobs
+    @jobs       = @repository.jobs.newest_first
   end
 end

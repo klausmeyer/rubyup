@@ -1,17 +1,23 @@
 <% if @jobs.any? %>
   <table class="table table-striped">
+    <colgroup>
+      <col width="10%">
+      <col width="35%">
+      <col width="35%">
+      <col width="20%">
+    </colgroup>
     <tr>
       <th><input type="checkbox"></th>
-      <th>ID</th>
       <th>Repo</th>
       <th>State</th>
+      <th>Actions</th>
     </tr>
     <% @jobs.each do |job| %>
       <tr>
         <td><input type="checkbox"></td>
-        <td><%= job.id %></td>
-        <td><%= link_to job.repository.name, job.repository %></td>
-        <td><span class="badge badge-secondary"><%= job.state %></span></td>
+        <td><%= job.repository.name %></td>
+        <td><%= state_badge job.state %></td>
+        <td><%= link_to 'Show', job %></td>
       </tr>
     <% end %>
   </table>

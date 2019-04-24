@@ -58,3 +58,4 @@ end
 # custom
 
 gem 'bootstrap', '~> 4.3.1'
+gem 'sidekiq', '~> 5.2.7'
