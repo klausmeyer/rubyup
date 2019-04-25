@@ -1,32 +1,36 @@
 <% if @repositories.any? %>
-  <table class="table table-striped">
-    <colgroup>
-      <col width="10%">
-      <col width="35%">
-      <col width="35%">
-      <col width="20%">
-    </colgroup>
-    <tr>
-      <th><input type="checkbox"></th>
-      <th>Name</th>
-      <th>Last Job</th>
-      <th>Actions</th>
-    </tr>
-    <% @repositories.each do |repo| %>
+  <%= form_with url: new_job_path, method: :get, local: true do |f| %>
+    <table class="table table-striped">
+      <colgroup>
+        <col width="10%">
+        <col width="35%">
+        <col width="35%">
+        <col width="20%">
+      </colgroup>
       <tr>
-        <td><input type="checkbox"></td>
-        <td><%= repo.name %></td>
-        <td>
-          <% if repo.job %>
-            <%= link_to repo.job, class: 'text-light' do %>
-              <%= state_badge repo.job.state %>
-            <% end %>
-          <% else %>
-            -
-          <% end %>
-        </td>
-        <td><%= link_to 'Show', repo %></td>
+        <th><input type="checkbox" data-behaviour="toggle-all" data-target="repositories[]"></th>
+        <th>Name</th>
+        <th>Last Job</th>
+        <th>Actions</th>
       </tr>
-    <% end %>
-  </table>
+      <% @repositories.each do |repo| %>
+        <tr>
+          <td><%= check_box_tag :'repositories[]', repo.id %></td>
+          <td><%= repo.name %></td>
+          <td>
+            <% if repo.job %>
+              <%= link_to repo.job, class: 'text-light' do %>
+                <%= state_badge repo.job.state %>
+              <% end %>
+            <% else %>
+              -
+            <% end %>
+          </td>
+          <td><%= link_to 'Show', repo %></td>
+        </tr>
+      <% end %>
+    </table>
+
+    <%= f.submit 'Create Jobs', class: 'btn btn-secondary' %>
+  <% end %>
 <% end %>

@@ -1,11 +1,11 @@
 class Job < ApplicationRecord
-  serialize :config, JSON
-
   belongs_to :repository
 
   validates :repository, presence: true
   validates :config,     presence: true
   validates :state, inclusion: { in: %w(created completed failed) }
+
+  validate :config_is_valid_yaml
 
   after_initialize :set_defaults
 
@@ -14,6 +14,13 @@ class Job < ApplicationRecord
   private
 
   def set_defaults
-    self.state ||= 'created'
+    self.config ||= Template.config.to_yaml
+    self.state  ||= 'created'
+  end
+
+  def config_is_valid_yaml
+    YAML.parse(config)
+  rescue Psych::SyntaxError
+    errors.add(:config, :invalid)
   end
 end

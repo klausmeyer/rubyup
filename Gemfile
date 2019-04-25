@@ -58,4 +58,6 @@ end
 # custom
 
 gem 'bootstrap', '~> 4.3.1'
+gem 'simple_form', '~> 4.1.0'
+
 gem 'sidekiq', '~> 5.2.7'

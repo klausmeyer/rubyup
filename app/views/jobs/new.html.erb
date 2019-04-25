@@ -1,0 +1,12 @@
+<%= simple_form_for(@job) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="form-group">
+    <%= f.input :config, class: 'form-control', input_html: { rows: 15 } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.hidden_field :repositories, value: params[:repositories]&.join(',') %>
+    <%= f.submit 'Create Job', class: 'btn btn-primary' %>
+  </div>
+<% end %>
