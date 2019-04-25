@@ -19,7 +19,7 @@ class JobsController < ApplicationController
 
     if @job.valid?
       Jobs::Create.new(blueprint: @job, repositories: repositories).call
-      redirect_to repositories_path
+      redirect_to jobs_path
     else
       render :new
     end
