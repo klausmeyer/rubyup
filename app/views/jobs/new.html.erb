@@ -6,7 +6,7 @@
   </div>
 
   <div class="form-group">
-    <%= f.hidden_field :repositories, value: params[:repositories]&.join(',') %>
+    <%= hidden_field_tag :repositories, repositories.join(',') %>
     <%= f.submit 'Create Job', class: 'btn btn-primary' %>
   </div>
 <% end %>
