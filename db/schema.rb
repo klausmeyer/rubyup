@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2019_04_23_123103) do
 
   create_table "jobs", force: :cascade do |t|
     t.bigint "repository_id", null: false
+    t.string "name", null: false
     t.text "config", null: false
     t.string "state", null: false
     t.datetime "created_at", null: false

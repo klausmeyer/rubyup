@@ -10,6 +10,8 @@ module Jobs
         job = blueprint.dup
         job.repository_id = repo
         job.save!
+
+        UpdateJob.perform_later(job)
       end
     end
 

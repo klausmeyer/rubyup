@@ -1,4 +1,8 @@
 class Template
+  def self.name
+    'Update Ruby to 2.6.3'
+  end
+
   def self.config
     {
       ticket:       'FOO-123',

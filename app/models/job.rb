@@ -2,6 +2,7 @@ class Job < ApplicationRecord
   belongs_to :repository
 
   validates :repository, presence: true
+  validates :name,       presence: true
   validates :config,     presence: true
   validates :state, inclusion: { in: %w(created completed failed) }
 
@@ -14,6 +15,7 @@ class Job < ApplicationRecord
   private
 
   def set_defaults
+    self.name   ||= Template.name
     self.config ||= Template.config.to_yaml
     self.state  ||= 'created'
   end

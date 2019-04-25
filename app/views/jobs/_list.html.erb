@@ -2,13 +2,15 @@
   <table class="table table-striped">
     <colgroup>
       <col width="10%">
-      <col width="35%">
-      <col width="35%">
       <col width="20%">
+      <col width="20%">
+      <col width="20%">
+      <col width="30%">
     </colgroup>
     <tr>
       <th><input type="checkbox"></th>
       <th>Repo</th>
+      <th>Name</th>
       <th>State</th>
       <th>Actions</th>
     </tr>
@@ -16,6 +18,7 @@
       <tr>
         <td><input type="checkbox"></td>
         <td><%= job.repository.name %></td>
+        <td><%= job.name %></td>
         <td><%= state_badge job.state %></td>
         <td><%= link_to 'Show', job %></td>
       </tr>

@@ -28,7 +28,7 @@ class JobsController < ApplicationController
   private
 
   def create_job_params
-    params.require(:job).permit(:config)
+    params.require(:job).permit(:name, :config)
   end
 
   def repositories
