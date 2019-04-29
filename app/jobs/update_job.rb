@@ -5,9 +5,11 @@ class UpdateJob < ApplicationJob
     log "[#{__method__}]"
     log job.inspect
 
-    docker_pull_image
+    self.job = job
+
+    # docker_pull_image
     docker_create_container
-    docker_exec_command ['whoami']
+    docker_exec_command 'rvm info'
     docker_remove_container
 
     job.update!(state: 'completed')
@@ -15,9 +17,7 @@ class UpdateJob < ApplicationJob
 
   private
 
-  DOCKER_IMAGE = 'ruby:2.6.3-alpine'.freeze
-
-  attr_accessor :container
+  attr_accessor :job, :container
 
   def log(string)
     puts "[+] #{self.class.name} | #{provider_job_id} | #{string}"
@@ -31,7 +31,7 @@ class UpdateJob < ApplicationJob
   def docker_create_container
     log "[#{__method__}]"
     self.container = Docker::Container.create(
-      'Image' => DOCKER_IMAGE,
+      'Image' => "rubyup:ruby-#{YAML.load(job.config).dig('version_from')}",
       'Cmd'   => ['/bin/sh', '-c', 'while true; do sleep 30; done;']
     )
     container.start
@@ -39,10 +39,10 @@ class UpdateJob < ApplicationJob
 
   def docker_exec_command(command)
     log "[#{__method__}]"
-    stdout, stderr, status = container.exec(command)
+    stdout, stderr, status = container.exec(['bash', '-l', '-c', command])
     log "STATUS: #{status}"
-    log "STDOUT: #{stdout}"
-    log "STDERR: #{stderr}"
+    log "STDOUT: #{stdout.join}"
+    log "STDERR: #{stderr.join}"
   end
 
   def docker_remove_container
