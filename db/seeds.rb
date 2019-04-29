@@ -25,21 +25,21 @@ if ENV['SEED_JOBS'] == 'true'
   job1 = Job.create!(
     repository: repo1,
     name:       'Update to Ruby 2.6.3',
-    config:     Template.config.to_yaml,
+    config:     Template.config,
     state:      'created'
   ) if repo1.jobs.count < 1
 
   job2 = Job.create!(
     repository: repo1,
     name:       'Update to Ruby 2.6.3',
-    config:     Template.config.to_yaml,
+    config:     Template.config,
     state:      'completed'
   ) if repo1.jobs.count < 2
 
   job3 = Job.create!(
     repository: repo2,
     name:       'Update to Ruby 2.6.3',
-    config:     Template.config.to_yaml,
+    config:     Template.config,
     state:      'failed'
   ) if repo2.jobs.empty?
 end

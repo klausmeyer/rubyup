@@ -31,7 +31,7 @@ class UpdateJob < ApplicationJob
   def docker_create_container
     log "[#{__method__}]"
     self.container = Docker::Container.create(
-      'Image' => "rubyup:ruby-#{YAML.load(job.config).dig('version_from')}",
+      'Image' => "rubyup:ruby-#{job.config[:version_from]}",
       'Cmd'   => ['/bin/sh', '-c', 'while true; do sleep 30; done;']
     )
     container.start

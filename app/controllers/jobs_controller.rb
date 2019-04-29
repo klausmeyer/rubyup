@@ -28,12 +28,14 @@ class JobsController < ApplicationController
   private
 
   def create_job_params
-    params.require(:job).permit(:name, :config)
+    params.require(:job).permit(:name, :config).to_h.tap do |hash|
+      hash[:config] = YAML.load(hash[:config])
+    end
   end
 
   def repositories
     ids = params[:repositories]
     ids = ids.split(',') if ids.is_a? String
-    ids
+    ids || []
   end
 end
