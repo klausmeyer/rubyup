@@ -31,6 +31,6 @@ class RepositoriesController < ApplicationController
   private
 
   def create_repo_params
-    params.require(:repository).permit(:name, :url)
+    params.require(:repository).permit(:name, :url, :key)
   end
 end

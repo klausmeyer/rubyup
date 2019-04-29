@@ -1,6 +1,7 @@
 class Repository < ApplicationRecord
   validates :name, presence: true
   validates :url,  presence: true
+  validates :key,  presence: true
 
   has_many :jobs
 
