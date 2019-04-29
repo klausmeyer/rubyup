@@ -1,19 +1,19 @@
-<% if @jobs.any? %>
-  <table class="table table-striped">
-    <colgroup>
-      <col width="10%">
-      <col width="20%">
-      <col width="20%">
-      <col width="20%">
-      <col width="30%">
-    </colgroup>
-    <tr>
-      <th><input type="checkbox"></th>
-      <th>Repo</th>
-      <th>Name</th>
-      <th>State</th>
-      <th>Actions</th>
-    </tr>
+<table class="table table-striped">
+  <colgroup>
+    <col width="10%">
+    <col width="20%">
+    <col width="20%">
+    <col width="20%">
+    <col width="30%">
+  </colgroup>
+  <tr>
+    <th><input type="checkbox"></th>
+    <th>Repo</th>
+    <th>Name</th>
+    <th>State</th>
+    <th>Actions</th>
+  </tr>
+  <% if @jobs.any? %>
     <% @jobs.each do |job| %>
       <tr>
         <td><input type="checkbox"></td>
@@ -23,5 +23,11 @@
         <td><%= link_to 'Show', job %></td>
       </tr>
     <% end %>
-  </table>
-<% end %>
+  <% else %>
+    <tr>
+      <td colspan="5" class="text-center">
+        No records found.
+      </td>
+    </tr>
+  <% end %>
+</table>

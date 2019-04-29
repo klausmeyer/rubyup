@@ -1,18 +1,18 @@
-<% if @repositories.any? %>
-  <%= form_with url: new_job_path, method: :get, local: true do |f| %>
-    <table class="table table-striped">
-      <colgroup>
-        <col width="10%">
-        <col width="35%">
-        <col width="35%">
-        <col width="20%">
-      </colgroup>
-      <tr>
-        <th><input type="checkbox" data-behaviour="toggle-all" data-target="repositories[]"></th>
-        <th>Name</th>
-        <th>Last Job</th>
-        <th>Actions</th>
-      </tr>
+<%= form_with url: new_job_path, method: :get, local: true do |f| %>
+  <table class="table table-striped">
+    <colgroup>
+      <col width="10%">
+      <col width="35%">
+      <col width="35%">
+      <col width="20%">
+    </colgroup>
+    <tr>
+      <th><input type="checkbox" data-behaviour="toggle-all" data-target="repositories[]"></th>
+      <th>Name</th>
+      <th>Last Job</th>
+      <th>Actions</th>
+    </tr>
+    <% if @repositories.any? %>
       <% @repositories.each do |repo| %>
         <tr>
           <td><%= check_box_tag :'repositories[]', repo.id %></td>
@@ -26,11 +26,22 @@
               -
             <% end %>
           </td>
-          <td><%= link_to 'Show', repo %></td>
+          <td>
+            <%= link_to 'Show', repo %>
+            |
+            <%= link_to 'Delete', repo, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
         </tr>
       <% end %>
-    </table>
+    <% else %>
+      <tr>
+        <td colspan="4" class="text-center">
+          No records found.
+        </td>
+      </tr>
+    <% end %>
+  </table>
 
-    <%= f.submit 'Create Jobs', class: 'btn btn-secondary' %>
-  <% end %>
+  <%= link_to 'Add Repository', new_repository_path, class: 'btn btn-secondary' %>
+  <%= f.submit 'Create Jobs', class: 'btn btn-secondary' %>
 <% end %>
