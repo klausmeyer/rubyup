@@ -11,6 +11,14 @@ class Repository < ApplicationRecord
   end
 
   def server
-    url.match(/@(?<server>.[^:]+):/)[:server]
+    url.match(URL_REGEX)[:server]
   end
+
+  def path
+    url.match(URL_REGEX)[:path]
+  end
+
+  private
+
+  URL_REGEX = /@(?<server>.[^:]+):(?<path>.+).git$/
 end

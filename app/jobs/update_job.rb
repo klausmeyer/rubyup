@@ -11,6 +11,7 @@ class UpdateJob < ApplicationJob
     docker_create_container
     docker_exec_commands
     docker_remove_container
+    github_create_pull_request
 
     job.update!(state: 'completed')
   rescue RuntimeError
@@ -71,8 +72,8 @@ class UpdateJob < ApplicationJob
       bundle update nokogiri || true
       bundle install
 
-      git config --global user.email "#{job.repository.identity.name}"
-      git config --global user.name "#{job.repository.identity.email}"
+      git config --global user.email "#{job.repository.identity.email}"
+      git config --global user.name "#{job.repository.identity.name}"
 
       git commit -am "#{message}"
       git push origin #{branch}
@@ -97,6 +98,15 @@ class UpdateJob < ApplicationJob
   def docker_remove_container
     log "[#{__method__}]"
     container.delete(force: true)
+  end
+
+  def github_create_pull_request
+    Octokit.configure do |c|
+      c.api_endpoint = "https://#{job.repository.server}/api/v3/"
+    end if job.repository.server != 'github.com'
+
+    client = Octokit::Client.new(access_token: job.repository.identity.github_api_key)
+    client.create_pull_request job.repository.path, 'master', branch, message, job.config[:details]
   end
 
   def message

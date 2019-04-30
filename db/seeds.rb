@@ -25,9 +25,10 @@ key = <<~RSA
 RSA
 
 identity = Identity.find_or_create_by!(
-  name:        'Ruby Up!',
-  email:       'rubyup@example.com',
-  private_key: key
+  name:           'Ruby Up!',
+  email:          'rubyup@example.com',
+  github_api_key: '26f7bdd38014c4994fecd7373ca7b424',
+  private_key:    key
 )
 
 repo1 = Repository.find_or_create_by!(
