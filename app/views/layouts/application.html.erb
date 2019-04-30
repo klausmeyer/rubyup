@@ -17,6 +17,8 @@
         |
         <%= link_to 'Jobs', jobs_path, class: params[:controller] == 'jobs' && 'font-weight-bold' %>
         |
+        <%= link_to 'Identities', identities_path, class: params[:controller] == 'identities' && 'font-weight-bold' %>
+        |
         <%= link_to 'Sidekiq', sidekiq_web_path, data: { turbolinks: false } %>
       </p>
 

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :repositories, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   resources :jobs, only: [:index, :show, :new, :create]
+  resources :identities, only: [:index, :show, :new, :create, :edit, :update, :destroy]
 
   mount Sidekiq::Web => '/sidekiq'
 end

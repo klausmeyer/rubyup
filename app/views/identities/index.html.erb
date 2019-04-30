@@ -1,0 +1,31 @@
+<table class="table table-striped">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>E-Mail</th>
+    <th></th>
+  </tr>
+  <% if @identities.any? %>
+    <% @identities.each do |identity| %>
+      <tr>
+        <td><%= identity.name %></td>
+        <td><%= identity.email %></td>
+        <td>
+          <%= link_to 'Show', identity %>
+          |
+          <%= link_to 'Edit', edit_identity_path(identity) %>
+          |
+          <%= link_to 'Delete', identity, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td class="text-center">
+        No records found.
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to 'Add Identity', new_identity_path, class: 'btn btn-secondary' %>
