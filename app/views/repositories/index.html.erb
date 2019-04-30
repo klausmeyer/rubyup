@@ -29,6 +29,8 @@
           <td>
             <%= link_to 'Show', repo %>
             |
+            <%= link_to 'Edit', edit_repository_path(repo) %>
+            |
             <%= link_to 'Delete', repo, method: :delete, data: { confirm: 'Are you sure?' } %>
           </td>
         </tr>

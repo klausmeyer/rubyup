@@ -3,7 +3,7 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   root to: redirect('/repositories')
 
-  resources :repositories, only: [:index, :show, :new, :create, :destroy]
+  resources :repositories, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   resources :jobs, only: [:index, :show, :new, :create]
 
   mount Sidekiq::Web => '/sidekiq'
