@@ -71,14 +71,14 @@ class UpdateJob < ApplicationJob
       bundle update nokogiri || true
       bundle install
 
-      git config --global user.email "rubyup@example.com"
-      git config --global user.name "Ruby Up!"
+      git config --global user.email "#{job.repository.identity.name}"
+      git config --global user.name "#{job.repository.identity.email}"
 
       git commit -am "#{message}"
       git push origin #{branch}
     SCRIPT
 
-    container.store_file '/home/rubyup/.ssh/id_rsa', job.repository.key
+    container.store_file '/home/rubyup/.ssh/id_rsa', job.repository.identity.private_key
     container.store_file '/home/rubyup/script.sh', script
 
     docker_exec_command 'sudo chown rubyup.rubyup /home/rubyup/script.sh; chmod +x /home/rubyup/script.sh'

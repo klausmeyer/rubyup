@@ -3,7 +3,7 @@ class CreateRepositories < ActiveRecord::Migration[5.2]
     create_table :repositories do |t|
       t.string :name, null: false
       t.string :url, null: false
-      t.text :key, null: false
+      t.references :identity, null: false
 
       t.timestamps
     end

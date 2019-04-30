@@ -24,22 +24,28 @@ key = <<~RSA
   -----END RSA PRIVATE KEY-----
 RSA
 
+identity = Identity.find_or_create_by!(
+  name:        'Ruby Up!',
+  email:       'rubyup@example.com',
+  private_key: key
+)
+
 repo1 = Repository.find_or_create_by!(
-  name: 'namespace/repo1',
-  url:  'https://github.example.com/namespace/repo3',
-  key:  key
+  name:     'namespace/repo1',
+  url:      'https://github.example.com/namespace/repo3',
+  identity: identity
 )
 
 repo2 = Repository.find_or_create_by!(
-  name: 'namespace/repo2',
-  url:  'https://github.example.com/namespace/repo2',
-  key:  key
+  name:     'namespace/repo2',
+  url:      'https://github.example.com/namespace/repo2',
+  identity: identity
 )
 
 repo3 = Repository.find_or_create_by!(
-  name: 'namespace/repo3',
-  url:  'https://github.example.com/namespace/repo3',
-  key:  key
+  name:     'namespace/repo3',
+  url:      'https://github.example.com/namespace/repo3',
+  identity: identity
 )
 
 if ENV['SEED_JOBS'] == 'true'

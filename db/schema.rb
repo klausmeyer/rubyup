@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_23_123103) do
+ActiveRecord::Schema.define(version: 2019_04_30_133102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "identities", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.text "private_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "jobs", force: :cascade do |t|
     t.bigint "repository_id", null: false
@@ -28,9 +36,10 @@ ActiveRecord::Schema.define(version: 2019_04_23_123103) do
   create_table "repositories", force: :cascade do |t|
     t.string "name", null: false
     t.string "url", null: false
-    t.text "key", null: false
+    t.bigint "identity_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["identity_id"], name: "index_repositories_on_identity_id"
   end
 
 end
