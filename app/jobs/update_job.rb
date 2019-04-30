@@ -33,7 +33,7 @@ class UpdateJob < ApplicationJob
   def docker_create_container
     log "[#{__method__}]"
     self.container = Docker::Container.create(
-      'Image'      => "rubyup:ruby-#{job.config[:version_from]}",
+      'Image'      => "rubyup:ruby-#{job.config[:version_to]}",
       'Cmd'        => ['/bin/sh', '-c', 'while true; do sleep 30; done;'],
       'WorkingDir' => '/home/rubyup'
     )
@@ -41,17 +41,48 @@ class UpdateJob < ApplicationJob
   end
 
   def docker_exec_commands
-    docker_exec_command 'mkdir /home/rubyup/.ssh'
-    docker_exec_command 'chmod 700 /home/rubyup/.ssh'
+    script = <<~SCRIPT
+      #!/bin/bash
+
+      set -e
+      set +x
+
+      sudo chmod 600 .ssh/id_rsa
+      sudo chown -R rubyup.rubyup .ssh
+
+      ssh-keygen -F #{job.repository.server} || ssh-keyscan #{job.repository.server} >> /home/rubyup/.ssh/known_hosts
+
+      git clone #{job.repository.url} workdir
+
+      cd workdir
+
+      git checkout -b rubyup/update/ruby-#{job.config[:version_to]}
+
+      sed -i.bak "s/#{job.config[:version_from]}/#{job.config[:version_to]}/" .ruby-version || true
+      sed -i.bak "s/#{job.config[:version_from]}/#{job.config[:version_to]}/" .travis.yml   || true
+      sed -i.bak "s/#{job.config[:version_from]}/#{job.config[:version_to]}/" Gemfile       || true
+      sed -i.bak "s/#{job.config[:version_from]}/#{job.config[:version_to]}/" Dockerfile    || true
+
+      rm *.bak || true; rm .*.bak || true
+
+      cd ..
+      cd workdir
+
+      bundle update nokogiri || true
+      bundle install
+
+      git config --global user.email "Ruby Up!"
+      git config --global user.name "rubyup@example.com"
+
+      git commit -am "#{message}"
+
+      git show
+    SCRIPT
 
     container.store_file '/home/rubyup/.ssh/id_rsa', job.repository.key
-
-    docker_exec_command 'chown rubyup.rubyup /home/rubyup/.ssh/id_rsa', user: 'root'
-    docker_exec_command 'chmod 600 /home/rubyup/.ssh/id_rsa', user: 'root'
-
-    docker_exec_command 'ssh-keygen -F github.com || ssh-keyscan github.com >> /home/rubyup/.ssh/known_hosts'
-
-    docker_exec_command "git clone #{job.repository.url}"
+    container.store_file '/home/rubyup/script.sh', script
+    docker_exec_command 'sudo chown rubyup.rubyup /home/rubyup/script.sh; chmod +x /home/rubyup/script.sh'
+    docker_exec_command '/home/rubyup/script.sh'
   end
 
   def docker_exec_command(command, options = {})
@@ -66,5 +97,9 @@ class UpdateJob < ApplicationJob
   def docker_remove_container
     log "[#{__method__}]"
     container.delete(force: true)
+  end
+
+  def message
+    job.config[:message] % job.config.symbolize_keys
   end
 end

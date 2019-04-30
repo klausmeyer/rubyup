@@ -8,4 +8,8 @@ class Repository < ApplicationRecord
   def job
     jobs.last
   end
+
+  def server
+    url.match(/@(?<server>.[^:]+):/)[:server]
+  end
 end
