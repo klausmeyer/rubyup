@@ -28,17 +28,21 @@ class UpdateJob < ApplicationJob
 
   def docker_pull_image
     log "[#{__method__}]"
-    Docker::Image.create('fromImage' => DOCKER_IMAGE)
+    Docker::Image.create('fromImage' => docker_image)
   end
 
   def docker_create_container
     log "[#{__method__}]"
     self.container = Docker::Container.create(
-      'Image'      => "rubyup:ruby-#{job.config[:version_to]}",
+      'Image'      => docker_image,
       'Cmd'        => ['/bin/sh', '-c', 'while true; do sleep 30; done;'],
       'WorkingDir' => '/home/rubyup'
     )
     container.start
+  end
+
+  def docker_image
+    "localhost:5000/rubyup/worker:ruby-#{job.config[:version_to]}"
   end
 
   def docker_exec_commands
