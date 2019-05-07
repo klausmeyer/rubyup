@@ -4,7 +4,7 @@ class Repository < ApplicationRecord
 
   belongs_to :identity
 
-  has_many :jobs
+  has_many :jobs, dependent: :destroy
 
   def job
     jobs.last

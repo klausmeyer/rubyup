@@ -37,7 +37,7 @@ class RepositoriesController < ApplicationController
   end
 
   def destroy
-    Repository.find(params[:id]).delete
+    Repository.find(params[:id]).destroy
 
     redirect_to repositories_path
   end
