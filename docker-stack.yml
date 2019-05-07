@@ -14,15 +14,19 @@ services:
   redis:
     image: redis:5.0
 
+  docker:
+    image: alpine/socat:1.0.3 # TODO: Replace this one with something maintained.
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    command: 'tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock'
+
   migrations: &main
     image: localhost:5000/rubyup/platform:latest
     environment: &shared_env
       DATABASE_URL: 'postgres://rubyup:rubyup@postgres/rubyup'
-      DOCKER_URL: 'unix:///var/run/docker.sock'
+      DOCKER_URL: 'http://docker:2375'
       REDIS_URL: 'redis://redis:6379'
       SECRET_KEY_BASE: '7d19f89b702480ce359cdd19bc9d4ac7f775deb50f37269712ad365ac2d3aba3d6c37174c858c3b15f5f424c56410ac5ffeb21cc37b9d7c81e7674f0404047b0'
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
     command: migrations
     deploy:
       restart_policy:
