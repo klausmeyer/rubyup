@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+
+  backend:
+    image: registry:2.7
+    ports:
+      - '5000:5000'
+    volumes:
+      - 'registry:/var/lib/registry'
+
+  frontend:
+    image: klausmeyer/docker-registry-browser:latest
+    environment:
+      DOCKER_REGISTRY_URL: http://backend:5000
+    ports:
+      - '8080:8080'
+
+volumes:
+  registry:

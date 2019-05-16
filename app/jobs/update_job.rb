@@ -51,7 +51,7 @@ class UpdateJob < ApplicationJob
   end
 
   def docker_image
-    "localhost:5000/rubyup/worker:ruby-#{job.config[:version_to]}"
+    "127.0.0.1:5000/rubyup/worker:ruby-#{job.config[:version_to]}"
   end
 
   def docker_exec_commands

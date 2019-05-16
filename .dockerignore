@@ -1,0 +1,5 @@
+.git
+db/data.rb
+install.sh
+docker-stack-*.yml
+Dockerfile*
