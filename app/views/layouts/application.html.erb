@@ -40,10 +40,12 @@
       </div>
     </nav>
 
-    <div class="container mt-4">
-      <h1 class="mb-4"><%= controller_name.humanize %></h1>
+    <div class="container pb-5">
+      <h1 class="my-4"><%= controller_name.humanize %></h1>
 
-      <%= yield %>
+      <div class="pb-5">
+        <%= yield %>
+      </div>
     </div>
 
     <footer class="fixed-bottom bg-light border-top p-4">
