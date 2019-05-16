@@ -88,7 +88,7 @@ class UpdateJob < ApplicationJob
       git config --global user.email "#{job.identity.email}"
       git config --global user.name "#{job.identity.name}"
 
-      git commit -am "#{message}"
+      git commit -am "#{job.config[:message]}"
       git push origin #{branch}
     SCRIPT
 
@@ -120,10 +120,6 @@ class UpdateJob < ApplicationJob
 
     client = Octokit::Client.new(access_token: job.identity.github_api_key)
     client.create_pull_request job.repository.path, 'master', branch, message, job.config[:details]
-  end
-
-  def message
-    job.config[:message] % job.config.symbolize_keys
   end
 
   def branch
