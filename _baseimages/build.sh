@@ -1,14 +1,25 @@
 #!/bin/bash -e
 
+registry="localhost:5000"
+namespace="rubyup"
+
+versions=(
+  2.6.1
+  2.6.2
+  2.6.3
+)
+
 echo "(Re-)Building docker images"
 
-docker build -t localhost:5000/rubyup/worker:base -f Dockerfile-base .
+docker build -t "$registry/$namespace/worker:base" .
 
-docker build -t localhost:5000/rubyup/worker:ruby-2.6.2 -f Dockerfile-ruby2.6.2 .
-docker build -t localhost:5000/rubyup/worker:ruby-2.6.3 -f Dockerfile-ruby2.6.3 .
+for version in $versions
+do
+  echo "Building Image with Ruby $version"
+  docker run -it --name "rubyup-worker-$version" "$registry/$namespace/worker:base" bash -l -c "rvm install $version"
 
-docker push localhost:5000/rubyup/worker
-docker push localhost:5000/rubyup/worker:ruby-2.6.2
-docker push localhost:5000/rubyup/worker:ruby-2.6.3
+  docker commit "rubyup-worker-$version" "$registry/$namespace/worker:ruby-$version"
+  docker rm "rubyup-worker-$version"
 
-echo Done
+  docker push "$registry/$namespace/worker:ruby-$version"
+done
