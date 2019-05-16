@@ -54,7 +54,8 @@ if ENV['SEED_JOBS'] == 'true'
     repository: repo1,
     name:       'Update to Ruby 2.6.3',
     config:     Template.config,
-    state:      'created'
+    state:      'created',
+    logs:       ['First Execution', 'Second Execution']
   ) if repo1.jobs.count < 1
 
   job2 = Job.create!(

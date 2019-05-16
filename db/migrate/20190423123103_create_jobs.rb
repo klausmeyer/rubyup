@@ -5,6 +5,7 @@ class CreateJobs < ActiveRecord::Migration[5.2]
       t.string :name, null: false
       t.text :config, null: false
       t.string :state, null: false
+      t.text :logs, null: true
 
       t.timestamps
     end

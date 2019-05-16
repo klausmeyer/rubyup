@@ -19,4 +19,17 @@
     <th>State</th>
     <td><%= state_badge @job.state %></td>
   </tr>
+  <tr>
+    <th>Logs</th>
+    <td>
+      <% if @job.logs.any? %>
+        <% @job.logs.each_with_index do |log, index| %>
+          <hr>
+          <pre>--- # <%= index + 1 %> ---<br><br><%= log %></pre>
+        <% end %>
+      <% else %>
+        -
+      <% end %>
+    </td>
+  </tr>
 </table>

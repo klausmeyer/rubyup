@@ -2,6 +2,7 @@ class Job < ApplicationRecord
   belongs_to :repository
 
   serialize :config
+  serialize :logs, Array
 
   validates :repository, presence: true
   validates :name,       presence: true

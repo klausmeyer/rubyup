@@ -2,10 +2,10 @@ class UpdateJob < ApplicationJob
   queue_as :default
 
   def perform(job)
-    log "[#{__method__}]"
-    log job.inspect
-
     self.job = job
+    self.log = []
+
+    log_message "[#{__method__}]"
 
     # docker_pull_image
     docker_create_container
@@ -13,26 +13,35 @@ class UpdateJob < ApplicationJob
     docker_remove_container
     github_create_pull_request
 
-    job.update!(state: 'completed')
-  rescue RuntimeError
-    job.update!(state: 'failed')
+    complete_job(state: 'completed')
+  rescue => e
+    log_message "Error: #{e}\n#{e.backtrace.join($INPUT_RECORD_SEPARATOR)}"
+    complete_job(state: 'failed')
   end
 
   private
 
-  attr_accessor :job, :container
+  attr_accessor :job, :container, :log
 
-  def log(string)
-    puts "[+] #{self.class.name} | #{provider_job_id} | #{string}"
+  def complete_job(state:)
+    job.state = state
+    job.logs << log.join($INPUT_RECORD_SEPARATOR)
+    job.save!
+  end
+
+  def log_message(string)
+    msg = "[+] #{self.class.name} | #{provider_job_id} | #{string}"
+    log << msg
+    puts msg
   end
 
   def docker_pull_image
-    log "[#{__method__}]"
+    log_message "[#{__method__}]"
     Docker::Image.create('fromImage' => docker_image)
   end
 
   def docker_create_container
-    log "[#{__method__}]"
+    log_message "[#{__method__}]"
     self.container = Docker::Container.create(
       'Image'      => docker_image,
       'Cmd'        => ['/bin/sh', '-c', 'while true; do sleep 30; done;'],
@@ -91,16 +100,16 @@ class UpdateJob < ApplicationJob
   end
 
   def docker_exec_command(command, options = {})
-    log "[#{__method__}] - #{command}"
+    log_message "[#{__method__}] - #{command}"
     stdout, stderr, status = container.exec(['bash', '-l', '-c', command], options)
-    log "STATUS: #{status}"
-    log "STDOUT: #{stdout.join}"
-    log "STDERR: #{stderr.join}"
+    log_message "STATUS: #{status}"
+    log_message "STDOUT: #{stdout.join}"
+    log_message "STDERR: #{stderr.join}"
     raise RuntimeError if status != 0
   end
 
   def docker_remove_container
-    log "[#{__method__}]"
+    log_message "[#{__method__}]"
     container.delete(force: true)
   end
 
