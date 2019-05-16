@@ -1,4 +1,8 @@
 <table class="table table-striped">
+  <colgroup>
+    <col width="20%">
+    <col width="80%">
+  </colgroup>
   <tr>
     <th>ID</th>
     <td><%= @identity.id %></td>
@@ -13,10 +17,10 @@
   </tr>
   <tr>
     <th>GitHub API Key</th>
-    <td><pre><%= @identity.github_api_key %></pre></td>
+    <td><pre><%= @identity.github_api_key.first(5) %> [...] <%= @identity.github_api_key.last(5) %></pre></td>
   </tr>
   <tr>
     <th>Private Key</th>
-    <td><pre><%= @identity.private_key %></pre></td>
+    <td><pre><%= @identity.private_key_signature %></pre></td>
   </tr>
 </table>

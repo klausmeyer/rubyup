@@ -9,4 +9,10 @@ class Identity < ApplicationRecord
   def to_s
     "#{name} <#{email}> (##{id})"
   end
+
+  def private_key_signature
+    SSHKey.new(private_key).md5_fingerprint
+  rescue
+    'Could not generate signature'
+  end
 end
