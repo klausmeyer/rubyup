@@ -33,26 +33,24 @@ identity = Identity.find_or_create_by!(
 
 repo1 = Repository.find_or_create_by!(
   name:     'namespace/repo1',
-  url:      'https://github.example.com/namespace/repo3',
-  identity: identity
+  url:      'https://github.example.com/namespace/repo3'
 )
 
 repo2 = Repository.find_or_create_by!(
   name:     'namespace/repo2',
-  url:      'https://github.example.com/namespace/repo2',
-  identity: identity
+  url:      'https://github.example.com/namespace/repo2'
 )
 
 repo3 = Repository.find_or_create_by!(
   name:     'namespace/repo3',
-  url:      'https://github.example.com/namespace/repo3',
-  identity: identity
+  url:      'https://github.example.com/namespace/repo3'
 )
 
 if ENV['SEED_JOBS'] == 'true'
   job1 = Job.create!(
     repository: repo1,
     name:       'Update to Ruby 2.6.3',
+    identity:   identity,
     config:     Template.config,
     state:      'created',
     logs:       ['First Execution', 'Second Execution']
@@ -61,6 +59,7 @@ if ENV['SEED_JOBS'] == 'true'
   job2 = Job.create!(
     repository: repo1,
     name:       'Update to Ruby 2.6.3',
+    identity:   identity,
     config:     Template.config,
     state:      'completed'
   ) if repo1.jobs.count < 2
@@ -68,6 +67,7 @@ if ENV['SEED_JOBS'] == 'true'
   job3 = Job.create!(
     repository: repo2,
     name:       'Update to Ruby 2.6.3',
+    identity:   identity,
     config:     Template.config,
     state:      'failed'
   ) if repo2.jobs.empty?

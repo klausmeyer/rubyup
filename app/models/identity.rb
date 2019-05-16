@@ -4,7 +4,7 @@ class Identity < ApplicationRecord
   validates :github_api_key, presence: true
   validates :private_key,    presence: true
 
-  has_many :repositories
+  has_many :jobs
 
   def to_s
     "#{name} <#{email}> (##{id})"

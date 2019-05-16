@@ -28,7 +28,7 @@ class JobsController < ApplicationController
   private
 
   def create_job_params
-    params.require(:job).permit(:name, :config).to_h.tap do |hash|
+    params.require(:job).permit(:name, :identity_id, :config).to_h.tap do |hash|
       hash[:config] = YAML.load(hash[:config])
     end
   end

@@ -6,6 +6,10 @@
   </div>
 
   <div class="form-group">
+    <%= f.association :identity %>
+  </div>
+
+  <div class="form-group">
     <%= f.input :config, class: 'form-control', input_html: { rows: 15, value: @job.config.to_yaml } %>
   </div>
 

@@ -1,5 +1,6 @@
 class Job < ApplicationRecord
   belongs_to :repository
+  belongs_to :identity
 
   serialize :config
   serialize :logs, Array
@@ -16,8 +17,9 @@ class Job < ApplicationRecord
   private
 
   def set_defaults
-    self.name   ||= Template.name
-    self.config ||= Template.config
-    self.state  ||= 'created'
+    self.name     ||= Template.name
+    self.config   ||= Template.config
+    self.identity ||= Identity.first
+    self.state    ||= 'created'
   end
 end

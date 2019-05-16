@@ -85,14 +85,14 @@ class UpdateJob < ApplicationJob
       bundle update nokogiri || true
       bundle install
 
-      git config --global user.email "#{job.repository.identity.email}"
-      git config --global user.name "#{job.repository.identity.name}"
+      git config --global user.email "#{job.identity.email}"
+      git config --global user.name "#{job.identity.name}"
 
       git commit -am "#{message}"
       git push origin #{branch}
     SCRIPT
 
-    container.store_file '/home/rubyup/.ssh/id_rsa', job.repository.identity.private_key
+    container.store_file '/home/rubyup/.ssh/id_rsa', job.identity.private_key
     container.store_file '/home/rubyup/script.sh', script
 
     docker_exec_command 'sudo chown rubyup.rubyup /home/rubyup/script.sh; chmod +x /home/rubyup/script.sh'
@@ -118,7 +118,7 @@ class UpdateJob < ApplicationJob
       c.api_endpoint = "https://#{job.repository.server}/api/v3/"
     end if job.repository.server != 'github.com'
 
-    client = Octokit::Client.new(access_token: job.repository.identity.github_api_key)
+    client = Octokit::Client.new(access_token: job.identity.github_api_key)
     client.create_pull_request job.repository.path, 'master', branch, message, job.config[:details]
   end
 

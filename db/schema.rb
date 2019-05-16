@@ -26,22 +26,22 @@ ActiveRecord::Schema.define(version: 2019_04_30_133102) do
 
   create_table "jobs", force: :cascade do |t|
     t.bigint "repository_id", null: false
+    t.bigint "identity_id", null: false
     t.string "name", null: false
     t.text "config", null: false
     t.string "state", null: false
     t.text "logs"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["identity_id"], name: "index_jobs_on_identity_id"
     t.index ["repository_id"], name: "index_jobs_on_repository_id"
   end
 
   create_table "repositories", force: :cascade do |t|
     t.string "name", null: false
     t.string "url", null: false
-    t.bigint "identity_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["identity_id"], name: "index_repositories_on_identity_id"
   end
 
 end
