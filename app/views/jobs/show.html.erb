@@ -1,4 +1,8 @@
 <table class="table table-striped">
+  <colgroup>
+    <col width="20%">
+    <col width="80%">
+  </colgroup>
   <tr>
     <th>ID</th>
     <td><%= @job.id %></td>
@@ -23,12 +27,27 @@
     <th>Logs</th>
     <td>
       <% if @job.logs.any? %>
-        <% @job.logs.each_with_index do |log, index| %>
-          <hr>
-          <pre>--- # <%= index + 1 %> ---<br><br><%= log %></pre>
-        <% end %>
+        <div class="accordion" id="logs">
+          <% @job.logs.reverse_each.with_index do |log, index| %>
+            <% index_shown = @job.logs.length - index %>
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">
+                  <button class="btn btn-link <% if index != 0 %>collapsed<% end %>" type="button" data-toggle="collapse" data-target="#log-<%= index_shown %>">
+                    Execution #<%= index_shown %>
+                  </button>
+                </h5>
+              </div>
+              <div id="log-<%= index_shown %>" class="collapse <% if index == 0 %>show<% end %>" data-parent="#logs">
+                <div class="card-body">
+                  <code><%= simple_format log %></code>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
       <% else %>
-        -
+        Not yet executed
       <% end %>
     </td>
   </tr>

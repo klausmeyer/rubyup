@@ -57,6 +57,7 @@ end
 
 # custom
 
+gem 'jquery-rails', '~> 4.3.3'
 gem 'bootstrap', '~> 4.3.1'
 gem 'simple_form', '~> 4.1.0'
 
