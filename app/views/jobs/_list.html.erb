@@ -20,7 +20,7 @@
         <td><%= job.repository.name %></td>
         <td><%= job.name %></td>
         <td><%= state_badge job.state %></td>
-        <td><%= link_to 'Show', job %></td>
+        <td><%= link_to 'Show', job, class: 'btn btn-sm btn-secondary' %></td>
       </tr>
     <% end %>
   <% else %>

@@ -2,9 +2,9 @@
   <table class="table table-striped">
     <colgroup>
       <col width="10%">
-      <col width="35%">
-      <col width="35%">
-      <col width="20%">
+      <col width="30%">
+      <col width="30%">
+      <col width="30%">
     </colgroup>
     <tr>
       <th><input type="checkbox" data-behaviour="toggle-all" data-target="repositories[]"></th>
@@ -27,11 +27,9 @@
             <% end %>
           </td>
           <td>
-            <%= link_to 'Show', repo %>
-            |
-            <%= link_to 'Edit', edit_repository_path(repo) %>
-            |
-            <%= link_to 'Delete', repo, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <%= link_to 'Show', repo, class: 'btn btn-sm btn-secondary' %>
+            <%= link_to 'Edit', edit_repository_path(repo), class: 'btn btn-sm btn-secondary' %>
+            <%= link_to 'Delete', repo, class: 'btn btn-sm btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
           </td>
         </tr>
       <% end %>

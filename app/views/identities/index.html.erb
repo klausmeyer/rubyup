@@ -11,9 +11,8 @@
         <td><%= identity.name %></td>
         <td><%= identity.email %></td>
         <td>
-          <%= link_to 'Show', identity %>
-          |
-          <%= link_to 'Delete', identity, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <%= link_to 'Show', identity, class: 'btn btn-sm btn-secondary' %>
+          <%= link_to 'Delete', identity, class: 'btn btn-sm btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>
