@@ -6,6 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+user = User.find_or_initialize_by(email: 'admin@example.com')
+user.password              = '12345678'
+user.password_confirmation = user.password
+user.save!
+
 key = <<~RSA
   -----BEGIN RSA PRIVATE KEY-----
   MIICWwIBAAKBgQDhew+CQZZ36Sufqlw7eht+eYUjG63R0Jf370TGMqSmBqQ81a7R
@@ -33,17 +38,17 @@ identity = Identity.find_or_create_by!(
 
 repo1 = Repository.find_or_create_by!(
   name:     'namespace/repo1',
-  url:      'https://github.example.com/namespace/repo3'
+  url:      'git@github.example.com:namespace/repo1.git'
 )
 
 repo2 = Repository.find_or_create_by!(
   name:     'namespace/repo2',
-  url:      'https://github.example.com/namespace/repo2'
+  url:      'git@github.example.com:namespace/repo2.git'
 )
 
 repo3 = Repository.find_or_create_by!(
   name:     'namespace/repo3',
-  url:      'https://github.example.com/namespace/repo3'
+  url:      'git@github.example.com:namespace/repo3.git'
 )
 
 if ENV['SEED_JOBS'] == 'true'

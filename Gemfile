@@ -60,6 +60,8 @@ end
 gem 'jquery-rails', '~> 4.3.3'
 gem 'bootstrap', '~> 4.3.1'
 gem 'simple_form', '~> 4.1.0'
+gem 'devise', '~> 4.6.2'
+gem 'devise-bootstrap-views', '~> 1.1.0'
 
 gem 'sidekiq', '~> 5.2.7'
 gem 'docker-api', '~> 1.34.2'
