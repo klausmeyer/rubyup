@@ -8,7 +8,7 @@ class Job < ApplicationRecord
   validates :repository, presence: true
   validates :name,       presence: true
   validates :config,     presence: true
-  validates :state, inclusion: { in: %w(created completed failed) }
+  validates :state, inclusion: { in: %w(created rescheduled completed failed) }
 
   after_initialize :set_defaults
 

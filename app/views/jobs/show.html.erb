@@ -25,7 +25,16 @@
   </tr>
   <tr>
     <th>State</th>
-    <td><%= state_badge @job.state %></td>
+    <td>
+      <%= state_badge @job.state %>
+
+      <% if @job.state == 'failed' %>
+        <%= link_to retry_job_path(@job), method: :put, class: 'btn btn-sm btn-secondary' do %>
+          <img src="https://img.icons8.com/small/16/000000/synchronize.png">
+          Retry
+        <% end %>
+      <% end %>
+    </td>
   </tr>
   <tr>
     <th>Logs</th>

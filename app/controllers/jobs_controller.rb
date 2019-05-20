@@ -25,6 +25,12 @@ class JobsController < ApplicationController
     end
   end
 
+  def retry
+    job = Job.find params[:id]
+    Jobs::Retry.new(job: job).call
+    redirect_to job
+  end
+
   private
 
   def create_job_params
