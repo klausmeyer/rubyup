@@ -7,7 +7,6 @@ class UpdateJob < ApplicationJob
 
     log_message "[#{__method__}]"
 
-    # docker_pull_image
     docker_create_container
     docker_exec_commands
     docker_remove_container
@@ -32,7 +31,7 @@ class UpdateJob < ApplicationJob
   def log_message(string)
     msg = "[+] #{self.class.name} | #{provider_job_id} | #{string}"
     log << msg
-    puts msg
+    puts msg unless Rails.env.test?
   end
 
   def docker_pull_image
@@ -119,7 +118,7 @@ class UpdateJob < ApplicationJob
     end if job.repository.server != 'github.com'
 
     client = Octokit::Client.new(access_token: job.identity.github_api_key)
-    client.create_pull_request job.repository.path, 'master', branch, message, job.config[:details]
+    client.create_pull_request job.repository.path, 'master', branch, job.config[:message], job.config[:details]
   end
 
   def branch

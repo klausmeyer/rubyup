@@ -67,3 +67,13 @@ gem 'sidekiq', '~> 5.2.7'
 gem 'docker-api', '~> 1.34.2'
 gem 'octokit', '~> 4.14.0'
 gem 'sshkey', '~> 2.0.0'
+
+group :development, :test do
+  gem 'rspec-rails', '~> 3.8.2'
+  gem 'factory_bot_rails', '~> 5.0.2'
+end
+
+group :test do
+  gem 'webmock', '~> 3.5.1'
+  gem 'json_spec', '~> 1.1.5'
+end

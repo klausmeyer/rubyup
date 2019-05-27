@@ -15,6 +15,6 @@ class Template
         'Gemfile',
         'Dockerfile'
       ]
-    }.stringify_keys
+    }
   end
 end
