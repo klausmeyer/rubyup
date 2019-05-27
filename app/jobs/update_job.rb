@@ -113,11 +113,8 @@ class UpdateJob < ApplicationJob
   end
 
   def github_create_pull_request
-    Octokit.configure do |c|
-      c.api_endpoint = "https://#{job.repository.server}/api/v3/"
-    end if job.repository.server != 'github.com'
-
     client = Octokit::Client.new(access_token: job.identity.github_api_key)
+    client.api_endpoint = "https://#{job.repository.server}/api/v3/" if job.repository.server != 'github.com'
     client.create_pull_request job.repository.path, 'master', branch, job.config[:message], job.config[:details]
   end
 
