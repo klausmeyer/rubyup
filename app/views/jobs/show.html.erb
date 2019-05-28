@@ -26,7 +26,7 @@
 
       <% if @job.state == 'failed' %>
         <%= link_to retry_job_path(@job), method: :put, class: 'btn btn-sm btn-secondary' do %>
-          <img src="https://img.icons8.com/small/16/000000/synchronize.png">
+          <%= image_tag 'synchronize.png' %>
           Retry
         <% end %>
       <% end %>
