@@ -6,6 +6,10 @@ RSpec.describe Jobs::Retry do
   let(:instance) { described_class.new(job: job) }
 
   describe '#call' do
+    before do
+      ActiveJob::Base.queue_adapter = :test
+    end
+
     context 'with a already retried job' do
       let(:state) { 'rescheduled' }
 
@@ -24,8 +28,6 @@ RSpec.describe Jobs::Retry do
       end
 
       it 'schedules a background execution for the job' do
-        ActiveJob::Base.queue_adapter = :test
-
         expect { instance.call }.to have_enqueued_job(UpdateJob).with(job)
       end
     end

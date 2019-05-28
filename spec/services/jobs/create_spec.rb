@@ -10,6 +10,10 @@ RSpec.describe Jobs::Create do
   let(:instance) { described_class.new(blueprint: blueprint, repositories: [repo1.id, repo2.id])}
 
   describe '#call' do
+    before do
+      ActiveJob::Base.queue_adapter = :test
+    end
+
     it 'creates one job per repository based on the given blueprint job' do
       expect { instance.call }.to change(Job, :count).by(2)
 
@@ -23,8 +27,6 @@ RSpec.describe Jobs::Create do
     end
 
     it 'schedules a background execution for each created job' do
-      ActiveJob::Base.queue_adapter = :test
-
       expect { instance.call }.to have_enqueued_job(UpdateJob).twice
     end
   end
