@@ -1,8 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Jobs::Create do
-  let(:identity)  { FactoryBot.create :identity}
-  let(:blueprint) { FactoryBot.build :job, repository: nil, identity: identity }
+  let(:identity)     { FactoryBot.create :identity}
+  let(:version_from) { FactoryBot.create :version_old }
+  let(:version_to)   { FactoryBot.create :version_new }
+
+  let(:blueprint) do
+    FactoryBot.build(:job,
+      repository:   nil,
+      identity:     identity,
+      version_from: version_from,
+      version_to:   version_to
+    )
+  end
 
   let(:repo1) { FactoryBot.create :repository }
   let(:repo2) { FactoryBot.create :repository }

@@ -2,6 +2,9 @@ class Job < ApplicationRecord
   belongs_to :repository
   belongs_to :identity
 
+  belongs_to :version_from, class_name: 'Version'
+  belongs_to :version_to,   class_name: 'Version'
+
   serialize :config
   serialize :logs, Array
 
@@ -17,9 +20,11 @@ class Job < ApplicationRecord
   private
 
   def set_defaults
-    self.name     ||= Template.name
-    self.config   ||= Template.config
-    self.identity ||= Identity.first
-    self.state    ||= 'created'
+    self.name         ||= Template.name
+    self.config       ||= Template.config
+    self.version_from ||= Version.for_select.second_to_last
+    self.version_to   ||= Version.for_select.last
+    self.identity     ||= Identity.first
+    self.state        ||= 'created'
   end
 end

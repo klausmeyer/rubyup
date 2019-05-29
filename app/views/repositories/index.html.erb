@@ -20,7 +20,7 @@
           <td>
             <% if repo.job %>
               <%= link_to repo.job, class: 'text-light' do %>
-                <%= state_badge repo.job.state %>
+                <%= job_state_badge repo.job.state %>
               <% end %>
             <% else %>
               -

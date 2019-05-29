@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :jobs, only: [:index, :show, :new, :create] do
     put :retry, on: :member
   end
+  resources :versions, only: [:index, :new, :create]
   resources :identities, only: [:index, :show, :new, :create, :destroy]
 
   authenticate :user do

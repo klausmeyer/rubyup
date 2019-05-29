@@ -34,23 +34,14 @@ class UpdateJob < ApplicationJob
     puts msg unless Rails.env.test?
   end
 
-  def docker_pull_image
-    log_message "[#{__method__}]"
-    Docker::Image.create('fromImage' => docker_image)
-  end
-
   def docker_create_container
     log_message "[#{__method__}]"
     self.container = Docker::Container.create(
-      'Image'      => docker_image,
+      'Image'      => job.version_to.docker_image,
       'Cmd'        => ['/bin/sh', '-c', 'while true; do sleep 30; done;'],
       'WorkingDir' => '/home/rubyup'
     )
     container.start
-  end
-
-  def docker_image
-    "127.0.0.1:5000/rubyup/worker:ruby-#{job.config[:version_to]}"
   end
 
   def docker_exec_commands
@@ -71,10 +62,10 @@ class UpdateJob < ApplicationJob
 
       git checkout -b #{branch}
 
-      sed -i.bak "s/#{job.config[:version_from]}/#{job.config[:version_to]}/" .ruby-version || true
-      sed -i.bak "s/#{job.config[:version_from]}/#{job.config[:version_to]}/" .travis.yml   || true
-      sed -i.bak "s/#{job.config[:version_from]}/#{job.config[:version_to]}/" Gemfile       || true
-      sed -i.bak "s/#{job.config[:version_from]}/#{job.config[:version_to]}/" Dockerfile    || true
+      sed -i.bak "s/#{job.version_from}/#{job.version_to}/" .ruby-version || true
+      sed -i.bak "s/#{job.version_from}/#{job.version_to}/" .travis.yml   || true
+      sed -i.bak "s/#{job.version_from}/#{job.version_to}/" Gemfile       || true
+      sed -i.bak "s/#{job.version_from}/#{job.version_to}/" Dockerfile    || true
 
       rm *.bak || true; rm .*.bak || true
 
@@ -119,6 +110,6 @@ class UpdateJob < ApplicationJob
   end
 
   def branch
-    "rubyup/update/ruby-#{job.config[:version_to]}"
+    "rubyup/update/ruby-#{job.version_to}"
   end
 end

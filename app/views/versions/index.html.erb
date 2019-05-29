@@ -1,0 +1,18 @@
+<table class="table table-striped">
+  <colgroup>
+    <col width="90%">
+    <col width="10%">
+  </colgroup>
+  <tr>
+    <th>Version</th>
+    <th>State</th>
+  </tr>
+  <% @versions.each do |version| %>
+  <tr>
+    <td><%= version.string %></td>
+    <td><%= version_state_badge version.state %></td>
+  </tr>
+  <% end %>
+</table>
+
+<%= link_to 'Add Version', new_version_path, class: 'btn btn-secondary' %>

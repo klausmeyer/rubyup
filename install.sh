@@ -27,25 +27,9 @@ docker push $image
 
 docker stack deploy -c docker-stack-platform.yml rubyup_platform
 
-## Build the worker images
-
-versions="2.6.1 2.6.2 2.6.3"
+## Build the worker base image
 
 baseimage="$registry/$namespace/worker:base"
 
 cat Dockerfile.worker | docker build -t $baseimage - # build with no context
 docker push $baseimage
-
-for version in $versions
-do
-  container="rubyup-worker-$version"
-
-  docker run -it --name $container $baseimage bash -l -c "rvm install $version"
-
-  image="$registry/$namespace/worker:ruby-$version"
-
-  docker commit $container $image
-  docker push $image
-
-  docker rm $container
-done

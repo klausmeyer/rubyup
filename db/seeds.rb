@@ -29,6 +29,10 @@ key = <<~RSA
   -----END RSA PRIVATE KEY-----
 RSA
 
+version_261 = Version.find_or_create_by!(string: '2.6.1', state: 'failed')
+version_262 = Version.find_or_create_by!(string: '2.6.2', state: 'available')
+version_263 = Version.find_or_create_by!(string: '2.6.3', state: 'available')
+
 identity = Identity.find_or_create_by!(
   name:           'Ruby Up!',
   email:          'rubyup@example.com',
@@ -37,43 +41,49 @@ identity = Identity.find_or_create_by!(
 )
 
 repo1 = Repository.find_or_create_by!(
-  name:     'namespace/repo1',
-  url:      'git@github.example.com:namespace/repo1.git'
+  name: 'namespace/repo1',
+  url:  'git@github.example.com:namespace/repo1.git'
 )
 
 repo2 = Repository.find_or_create_by!(
-  name:     'namespace/repo2',
-  url:      'git@github.example.com:namespace/repo2.git'
+  name: 'namespace/repo2',
+  url:  'git@github.example.com:namespace/repo2.git'
 )
 
 repo3 = Repository.find_or_create_by!(
-  name:     'namespace/repo3',
-  url:      'git@github.example.com:namespace/repo3.git'
+  name: 'namespace/repo3',
+  url:  'git@github.example.com:namespace/repo3.git'
 )
 
 if ENV['SEED_JOBS'] == 'true'
   job1 = Job.create!(
-    repository: repo1,
-    name:       'Update to Ruby 2.6.3',
-    identity:   identity,
-    config:     Template.config,
-    state:      'created',
-    logs:       ['First Execution', 'Second Execution']
+    repository:   repo1,
+    name:         'Update to Ruby 2.6.3',
+    identity:     identity,
+    version_from: version_262,
+    version_to:   version_263,
+    config:       Template.config,
+    state:        'created',
+    logs:         ['First Execution', 'Second Execution']
   ) if repo1.jobs.count < 1
 
   job2 = Job.create!(
-    repository: repo1,
-    name:       'Update to Ruby 2.6.3',
-    identity:   identity,
-    config:     Template.config,
-    state:      'completed'
+    repository:   repo1,
+    name:         'Update to Ruby 2.6.3',
+    identity:     identity,
+    version_from: version_262,
+    version_to:   version_263,
+    config:       Template.config,
+    state:        'completed'
   ) if repo1.jobs.count < 2
 
   job3 = Job.create!(
-    repository: repo2,
-    name:       'Update to Ruby 2.6.3',
-    identity:   identity,
-    config:     Template.config,
-    state:      'failed'
+    repository:   repo2,
+    name:         'Update to Ruby 2.6.3',
+    identity:     identity,
+    version_from: version_262,
+    version_to:   version_263,
+    config:       Template.config,
+    state:        'failed'
   ) if repo2.jobs.empty?
 end

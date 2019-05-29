@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_20_133931) do
+ActiveRecord::Schema.define(version: 2019_05_29_071351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,8 +33,12 @@ ActiveRecord::Schema.define(version: 2019_05_20_133931) do
     t.text "logs"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "version_from_id", null: false
+    t.bigint "version_to_id", null: false
     t.index ["identity_id"], name: "index_jobs_on_identity_id"
     t.index ["repository_id"], name: "index_jobs_on_repository_id"
+    t.index ["version_from_id"], name: "index_jobs_on_version_from_id"
+    t.index ["version_to_id"], name: "index_jobs_on_version_to_id"
   end
 
   create_table "repositories", force: :cascade do |t|
@@ -54,6 +58,13 @@ ActiveRecord::Schema.define(version: 2019_05_20_133931) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "string", null: false
+    t.string "state", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

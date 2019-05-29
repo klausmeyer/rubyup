@@ -12,6 +12,14 @@
     <td><%= @job.name %></td>
   </tr>
   <tr>
+    <th>Version From</th>
+    <td><%= @job.version_from %></td>
+  </tr>
+  <tr>
+    <th>Version To</th>
+    <td><%= @job.version_to %></td>
+  </tr>
+  <tr>
     <th>Identity</th>
     <td><pre><%= @job.identity %></pre></td>
   </tr>
@@ -22,7 +30,7 @@
   <tr>
     <th>State</th>
     <td>
-      <%= state_badge @job.state %>
+      <%= job_state_badge @job.state %>
 
       <% if @job.state == 'failed' %>
         <%= link_to retry_job_path(@job), method: :put, class: 'btn btn-sm btn-secondary' do %>
