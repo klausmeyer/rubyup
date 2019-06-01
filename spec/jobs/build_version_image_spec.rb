@@ -23,11 +23,11 @@ RSpec.describe BuildVersionImage do
     end
 
     it 'uses the correct base image' do
-      expect(Docker::Image).to have_received(:build).with(%r{FROM 127.0.0.1:5000/rubyup/worker:base})
+      expect(Docker::Image).to have_received(:build).with(a_string_including('FROM 127.0.0.1:5000/rubyup/worker:base'))
     end
 
     it 'installs the desired ruby version in the image' do
-      expect(Docker::Image).to have_received(:build).with(/rvm install 2.6.3/)
+      expect(Docker::Image).to have_received(:build).with(a_string_including('rvm install 2.6.3'))
     end
 
     it 'tags the image with the correct name' do
