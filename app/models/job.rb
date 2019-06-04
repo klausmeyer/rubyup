@@ -5,7 +5,6 @@ class Job < ApplicationRecord
   belongs_to :version_from, class_name: 'Version'
   belongs_to :version_to,   class_name: 'Version'
 
-  serialize :config
   serialize :logs, Array
 
   validates :repository, presence: true

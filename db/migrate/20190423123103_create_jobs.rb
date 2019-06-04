@@ -4,7 +4,7 @@ class CreateJobs < ActiveRecord::Migration[5.2]
       t.references :repository, null: false
       t.references :identity, null: false
       t.string :name, null: false
-      t.text :config, null: false
+      t.json :config, null: false
       t.string :state, null: false
       t.text :logs, null: true
 

@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2019_05_29_071351) do
     t.bigint "repository_id", null: false
     t.bigint "identity_id", null: false
     t.string "name", null: false
-    t.text "config", null: false
+    t.json "config", null: false
     t.string "state", null: false
     t.text "logs"
     t.datetime "created_at", null: false
