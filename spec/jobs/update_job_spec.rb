@@ -25,7 +25,7 @@ RSpec.describe UpdateJob do
     end
 
     let!(:req_github_api) do
-      stub_request(:post, 'https://github.example.com/api/v3/repos/example/repo/pulls').to_return(status: 200)
+      stub_request(:post, "https://github.example.com/api/v3/repos/#{job.repository.path}/pulls").to_return(status: 200)
     end
 
     it 'creates a new docker container' do

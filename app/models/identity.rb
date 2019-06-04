@@ -1,6 +1,6 @@
 class Identity < ApplicationRecord
   validates :name,           presence: true
-  validates :email,          presence: true
+  validates :email,          presence: true, uniqueness: true
   validates :github_api_key, presence: true
   validates :private_key,    presence: true
 

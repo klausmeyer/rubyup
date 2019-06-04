@@ -1,8 +1,8 @@
 class Repository < ApplicationRecord
   URL_REGEX = /\A(?<user>.+)@(?<server>.[^:]+):(?<path>.+).git\z/
 
-  validates :name, presence: true
-  validates :url,  presence: true, format: { with: URL_REGEX }
+  validates :name, presence: true, uniqueness: true
+  validates :url,  presence: true, uniqueness: true, format: { with: URL_REGEX }
 
   has_many :jobs, dependent: :destroy
 

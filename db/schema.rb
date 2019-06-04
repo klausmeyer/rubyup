@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_29_071351) do
+ActiveRecord::Schema.define(version: 2019_06_04_165708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2019_05_29_071351) do
     t.text "private_key", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_identities_on_email", unique: true
   end
 
   create_table "jobs", force: :cascade do |t|
@@ -46,6 +47,8 @@ ActiveRecord::Schema.define(version: 2019_05_29_071351) do
     t.string "url", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_repositories_on_name", unique: true
+    t.index ["url"], name: "index_repositories_on_url", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -65,6 +68,11 @@ ActiveRecord::Schema.define(version: 2019_05_29_071351) do
     t.string "state", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["string"], name: "index_versions_on_string", unique: true
   end
 
+  add_foreign_key "jobs", "identities"
+  add_foreign_key "jobs", "repositories"
+  add_foreign_key "jobs", "versions", column: "version_from_id"
+  add_foreign_key "jobs", "versions", column: "version_to_id"
 end
