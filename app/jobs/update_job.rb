@@ -62,6 +62,8 @@ class UpdateJob < ApplicationJob
 
       git checkout -b #{branch}
 
+      grep -q #{job.version_to} .ruby-version && exit 1
+
       sed -i.bak "s/#{job.version_from}/#{job.version_to}/" .ruby-version || true
       sed -i.bak "s/#{job.version_from}/#{job.version_to}/" .travis.yml   || true
       sed -i.bak "s/#{job.version_from}/#{job.version_to}/" Gemfile       || true
