@@ -51,12 +51,7 @@ class UpdateJob < ApplicationJob
       set -e
       set +x
 
-      sudo chmod 600 .ssh/id_rsa
-      sudo chown -R rubyup.rubyup .ssh
-
-      ssh-keygen -F #{job.repository.server} || ssh-keyscan #{job.repository.server} >> /home/rubyup/.ssh/known_hosts
-
-      git clone #{job.repository.url} workdir
+      git clone #{clone_url} workdir
 
       cd workdir
 
@@ -84,7 +79,6 @@ class UpdateJob < ApplicationJob
       git push origin #{branch}
     SCRIPT
 
-    container.store_file '/home/rubyup/.ssh/id_rsa', job.identity.private_key
     container.store_file '/home/rubyup/script.sh', script
 
     docker_exec_command 'sudo chown rubyup.rubyup /home/rubyup/script.sh; chmod +x /home/rubyup/script.sh'
@@ -109,6 +103,10 @@ class UpdateJob < ApplicationJob
     client = Octokit::Client.new(access_token: job.identity.github_api_key)
     client.api_endpoint = "https://#{job.repository.server}/api/v3/" if job.repository.server != 'github.com'
     client.create_pull_request job.repository.path, 'master', branch, job.config['message'], job.config['details']
+  end
+
+  def clone_url
+    "https://#{job.identity.github_api_key}:x-oauth-basic@#{job.repository.server}/#{job.repository.path}"
   end
 
   def branch

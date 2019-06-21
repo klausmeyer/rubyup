@@ -30,6 +30,6 @@ class IdentitiesController < ApplicationController
   private
 
   def identity_params
-    params.require(:identity).permit(:name, :email, :github_api_key, :private_key)
+    params.require(:identity).permit(:name, :email, :github_api_key)
   end
 end

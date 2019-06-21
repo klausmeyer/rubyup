@@ -42,8 +42,8 @@ RSpec.describe UpdateJob do
     it 'uploads files and executes commands' do
       instance.perform(job)
 
-      expect(container_double).to have_received(:store_file).with '/home/rubyup/.ssh/id_rsa', 'rsa-private-key'
-      expect(container_double).to have_received(:store_file).with '/home/rubyup/script.sh', %r[#!/bin/bash]
+      expect(container_double).to have_received(:store_file).with '/home/rubyup/script.sh',
+        a_string_including('#!/bin/bash')
 
       expect(container_double).to have_received(:exec).with([
         'bash', '-l', '-c',
@@ -54,6 +54,13 @@ RSpec.describe UpdateJob do
         'bash', '-l', '-c',
         '/home/rubyup/script.sh'
       ], {})
+    end
+
+    it 'uses a https url with token to clone the repo' do
+      instance.perform(job)
+
+      expect(container_double).to have_received(:store_file).with '/home/rubyup/script.sh',
+        a_string_including('git clone https://github-api-key:x-oauth-basic@github.example.com')
     end
 
     it 'creates a github pull request' do
