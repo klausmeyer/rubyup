@@ -74,6 +74,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'webmock', '~> 3.5.1'
+  gem 'webmock', '~> 3.6.2'
   gem 'json_spec', '~> 1.1.5'
 end
