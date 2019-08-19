@@ -30,4 +30,4 @@ See the included `install.sh`. It can setup a complete deployment on a (empty) d
 
 ## Licence
 
-Currently not decided. Please do not distribute.
+The application is available as open source under the terms of the MIT License.
