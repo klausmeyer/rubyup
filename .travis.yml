@@ -9,6 +9,9 @@ cache: bundler
 rvm:
   - 2.6.3
 
+services:
+  - postgresql
+
 before_script:
   - bundle exec rails db:create db:migrate
 
