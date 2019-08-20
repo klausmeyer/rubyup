@@ -16,7 +16,7 @@ This part of the application allows to manage the repositories which are updated
 The worker is triggered by the creation of jobs in the Web UI and performs the following steps:
 
 * Create new build docker container using the target Ruby version (pre-req.).
-* Checks out the repository using the configured SSH private-key.
+* Checks out the repository using the configured GitHub api-key.
 * Switches to a new local branch
 * Replaces the Ruby version in the configured list of files
 * Runs `bundle install`
