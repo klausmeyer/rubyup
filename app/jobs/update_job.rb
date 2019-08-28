@@ -69,6 +69,7 @@ class UpdateJob < ApplicationJob
       cd ..
       cd workdir
 
+      test -f Gemfile.lock && gem install bundler -v $(grep -A1 'BUNDLED WITH' Gemfile.lock | tail -n1 | tr -d '[:space:]')
       bundle update nokogiri || true
       bundle install
 
