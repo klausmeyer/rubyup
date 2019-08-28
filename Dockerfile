@@ -20,9 +20,9 @@ RUN apk update \
  && gem install bundler \
  && bundle install --without development test \
  && bundle exec rake assets:precompile \
- && addgroup -S app && adduser -S app -G app -h /app \
- && chown -R app.app /app \
- && chown -R app.app /usr/local/bundle \
+ && addgroup -S rubyup && adduser -S rubyup -G rubyup -h /usr/local/rubyup \
+ && chown -R rubyup.rubyup /usr/local/rubyup \
+ && chown -R rubyup.rubyup /usr/local/bundle \
  && apk del build-base yarn
 
 USER rubyup
