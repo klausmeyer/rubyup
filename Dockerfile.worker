@@ -2,7 +2,7 @@ FROM ubuntu:19.04
 
 RUN apt-get update \
  && apt-get install -y autoconf automake bison build-essential curl gawk git libffi-dev libgdbm-dev liblzma-dev \
-      libmysqlclient-dev libncurses5-dev libreadline-dev libsqlite3-dev libssl-dev libtool libyaml-dev mysql-client \
+      libmysqlclient-dev libncurses5-dev libpq-dev libreadline-dev libsqlite3-dev libssl-dev libtool libyaml-dev mysql-client \
       patch pkg-config ruby-dev sqlite3 sudo zlib1g-dev \
  && useradd -m rubyup -s /bin/bash \
  && echo 'rubyup    ALL= NOPASSWD: ALL' > /etc/sudoers.d/rubyup \
