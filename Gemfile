@@ -69,7 +69,7 @@ gem 'docker-api', '~> 1.34.2'
 gem 'octokit', '~> 4.14.0'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.8.2'
+  gem 'rspec-rails', '~> 3.9.0'
   gem 'factory_bot_rails', '~> 5.1.0'
 end
 
