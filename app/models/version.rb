@@ -8,7 +8,7 @@ class Version < ApplicationRecord
 
   class << self
     def docker_registry
-      '127.0.0.1:5000'
+      'registry.apps.klaus-meyer.net'
     end
 
     def docker_baseimage

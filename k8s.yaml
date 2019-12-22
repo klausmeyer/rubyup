@@ -1,0 +1,245 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rubyup
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-data
+  namespace: rubyup
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "glusterfs"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: rubyup
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  template:
+    metadata:
+      name: postgres
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:11.2
+          env:
+            - name: POSTGRES_DB
+              value: rubyup
+            - name: POSTGRES_USER
+              value: rubyup
+            - name: POSTGRES_PASSWORD
+              value: rubyup
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: rubyup
+  labels:
+    app: postgres
+spec:
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    app: postgres
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: rubyup
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  replicas: 1
+  template:
+    metadata:
+      name: redis
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:5.0
+          ports:
+            - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: rubyup
+  labels:
+    app: redis
+spec:
+  ports:
+    - port: 6379
+      protocol: TCP
+      targetPort: 6379
+  selector:
+    app: redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker
+  namespace: rubyup
+spec:
+  selector:
+    matchLabels:
+      app: docker
+  replicas: 1
+  template:
+    metadata:
+      name: docker
+      labels:
+        app: docker
+    spec:
+      securityContext:
+        fsGroup: 998
+      containers:
+        - name: docker
+          image: registry.foo.bar/rubyup/socat:latest
+          args: ["tcp-listen:2375,fork,reuseaddr", "unix-connect:/var/run/docker.sock"]
+          ports:
+            - containerPort: 2375
+          volumeMounts:
+            - name: dockersock
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: dockersock
+          hostPath:
+            path: /var/run/docker.sock
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker
+  namespace: rubyup
+  labels:
+    app: docker
+spec:
+  ports:
+    - port: 2375
+      protocol: TCP
+      targetPort: 2375
+  selector:
+    app: docker
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: rubyup
+spec:
+  selector:
+    matchLabels:
+      app: web
+  replicas: 1
+  template:
+    metadata:
+      name: web
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: registry.foo.bar/rubyup/platform:latest
+          args: ["web"]
+          env:
+            - name: DATABASE_URL
+              value: "postgres://rubyup:rubyup@postgres/rubyup"
+            - name: DOCKER_URL
+              value: "http://docker:2375"
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+            - name: SECRET_KEY_BASE
+              value: changeme
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: rubyup
+spec:
+  selector:
+    matchLabels:
+      app: worker
+  replicas: 1
+  template:
+    metadata:
+      name: worker
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: registry.foo.bar/rubyup/platform:latest
+          args: ["worker"]
+          env:
+            - name: DATABASE_URL
+              value: "postgres://rubyup:rubyup@postgres/rubyup"
+            - name: DOCKER_URL
+              value: "http://docker:2375"
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+            - name: SECRET_KEY_BASE
+              value: changeme
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: rubyup
+  labels:
+    app: web
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: web
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rubyup-web
+  namespace: rubyup
+spec:
+  rules:
+  - host: rubyup.foo.bar
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: web
+          servicePort: 8080
