@@ -22,18 +22,21 @@ identity = Identity.find_or_create_by!(
 )
 
 repo1 = Repository.find_or_create_by!(
-  name: 'namespace/repo1',
-  url:  'git@github.example.com:namespace/repo1.git'
+  name:   'namespace/repo1',
+  url:    'git@github.example.com:namespace/repo1.git',
+  branch: 'master'
 )
 
 repo2 = Repository.find_or_create_by!(
-  name: 'namespace/repo2',
-  url:  'git@github.example.com:namespace/repo2.git'
+  name:   'namespace/repo2',
+  url:    'git@github.example.com:namespace/repo2.git',
+  branch: 'master'
 )
 
 repo3 = Repository.find_or_create_by!(
-  name: 'namespace/repo3',
-  url:  'git@github.example.com:namespace/repo3.git'
+  name:   'namespace/repo3',
+  url:    'git@github.example.com:namespace/repo3.git',
+  branch: 'develop'
 )
 
 if ENV['SEED_JOBS'] == 'true'

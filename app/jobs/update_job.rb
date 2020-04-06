@@ -51,11 +51,11 @@ class UpdateJob < ApplicationJob
       set -e
       set +x
 
-      git clone #{clone_url} workdir
+      git clone -b #{job.repository.branch} #{clone_url} workdir
 
       cd workdir
 
-      git checkout -b #{branch}
+      git checkout -b #{working_branch}
 
       grep -q #{job.version_to} .ruby-version && exit 1
 
@@ -77,7 +77,7 @@ class UpdateJob < ApplicationJob
       git config --global user.name "#{job.identity.name}"
 
       git commit -am "#{job.config['message']}"
-      git push origin #{branch}
+      git push origin #{working_branch}
     SCRIPT
 
     container.store_file '/home/rubyup/script.sh', script
@@ -103,14 +103,14 @@ class UpdateJob < ApplicationJob
   def github_create_pull_request
     client = Octokit::Client.new(access_token: job.identity.github_api_key)
     client.api_endpoint = "https://#{job.repository.server}/api/v3/" if job.repository.server != 'github.com'
-    client.create_pull_request job.repository.path, 'master', branch, job.config['message'], job.config['details']
+    client.create_pull_request job.repository.path, job.repository.branch, working_branch, job.config['message'], job.config['details']
   end
 
   def clone_url
     "https://#{job.identity.github_api_key}:x-oauth-basic@#{job.repository.server}/#{job.repository.path}"
   end
 
-  def branch
+  def working_branch
     "rubyup/update/ruby-#{job.version_to}"
   end
 end

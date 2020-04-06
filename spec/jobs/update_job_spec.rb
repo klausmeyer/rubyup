@@ -60,7 +60,7 @@ RSpec.describe UpdateJob do
       instance.perform(job)
 
       expect(container_double).to have_received(:store_file).with '/home/rubyup/script.sh',
-        a_string_including('git clone https://github-api-key:x-oauth-basic@github.example.com')
+        a_string_including('git clone -b master https://github-api-key:x-oauth-basic@github.example.com')
     end
 
     it 'creates a github pull request' do
@@ -69,7 +69,7 @@ RSpec.describe UpdateJob do
       expect(req_github_api.with do |req|
         expect(req.headers['Authorization']).to eq 'token github-api-key'
         expect(req.body).to be_json_eql({
-          base:  'master',
+          base:  job.repository.branch,
           body:  ':link: https://www.ruby-lang.org/en/news/2019/04/17/ruby-2-6-3-released/',
           head:  'rubyup/update/ruby-2.6.3',
           title: 'Update Ruby to 2.6.3'
