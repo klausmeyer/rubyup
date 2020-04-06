@@ -1,5 +1,6 @@
 class Version < ApplicationRecord
   validates :string, presence: true, uniqueness: true
+  validates :link,   presence: true
   validates :state, inclusion: { in: %w(created available failed) }
 
   scope :for_select, -> { where(state: 'available').order(:string) }

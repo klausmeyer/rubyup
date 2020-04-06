@@ -11,9 +11,23 @@ user.password              = '12345678'
 user.password_confirmation = user.password
 user.save!
 
-version_261 = Version.find_or_create_by!(string: '2.6.1', state: 'failed')
-version_262 = Version.find_or_create_by!(string: '2.6.2', state: 'available')
-version_263 = Version.find_or_create_by!(string: '2.6.3', state: 'available')
+version_261 = Version.find_or_create_by!(
+  string: '2.6.1',
+  state:  'failed',
+  link:   'https://www.ruby-lang.org/en/news/2019/01/30/ruby-2-6-1-released/'
+)
+
+version_262 = Version.find_or_create_by!(
+  string: '2.6.2',
+  state:  'available',
+  link:   'https://www.ruby-lang.org/en/news/2019/03/13/ruby-2-6-2-released/'
+)
+
+version_263 = Version.find_or_create_by!(
+  string: '2.6.3',
+  state:  'available',
+  link:   'https://www.ruby-lang.org/en/news/2019/04/17/ruby-2-6-3-released/'
+)
 
 identity = Identity.find_or_create_by!(
   name:           'Ruby Up!',

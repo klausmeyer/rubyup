@@ -1,18 +1,26 @@
 class Template
   def self.name
-    'Update Ruby to 2.6.3'
+    "Update Ruby to #{ruby_version}"
   end
 
   def self.config
     {
-      message:      name,
-      details:      ':link: https://www.ruby-lang.org/en/news/2019/04/17/ruby-2-6-3-released/',
-      files: [
-        '.ruby-version',
-        '.travis.yml',
-        'Gemfile',
-        'Dockerfile'
-      ]
+      message: name,
+      details: ":link: #{ruby_link}"
     }
+  end
+
+  private
+
+  def self.ruby_version
+    return 'x.y.z' if (version = Version.for_select.last).nil?
+
+    version.string
+  end
+
+  def self.ruby_link
+    return 'https://www.ruby-lang.org/' if (version = Version.for_select.last).nil?
+
+    version.link
   end
 end

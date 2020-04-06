@@ -1,15 +1,18 @@
 <table class="table table-striped">
   <colgroup>
-    <col width="90%">
+    <col width="20%">
+    <col width="70%">
     <col width="10%">
   </colgroup>
   <tr>
     <th>Version</th>
+    <th>Link</th>
     <th>State</th>
   </tr>
   <% @versions.each do |version| %>
   <tr>
     <td><%= version.string %></td>
+    <td><%= link_to version.link %></td>
     <td><%= version_state_badge version.state %></td>
   </tr>
   <% end %>
