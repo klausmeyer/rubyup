@@ -70,7 +70,7 @@ gem 'octokit', '~> 4.18.0'
 
 group :development, :test do
   gem 'rspec-rails', '~> 4.0.0'
-  gem 'factory_bot_rails', '~> 5.1.0'
+  gem 'factory_bot_rails', '~> 5.2.0'
 end
 
 group :test do
