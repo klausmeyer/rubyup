@@ -59,7 +59,7 @@ end
 # custom
 
 gem 'jquery-rails', '~> 4.4.0'
-gem 'bootstrap', '~> 4.4.1'
+gem 'bootstrap', '~> 4.5.0'
 gem 'simple_form', '~> 5.0.0'
 gem 'devise', '~> 4.7.0'
 gem 'devise-bootstrap-views', '~> 1.1.0'
