@@ -65,7 +65,7 @@ gem 'devise', '~> 4.7.0'
 gem 'devise-bootstrap-views', '~> 1.1.0'
 
 gem 'sidekiq', '~> 6.1.0'
-gem 'docker-api', '~> 1.34.2'
+gem 'docker-api', '~> 2.0.0'
 gem 'octokit', '~> 4.18.0'
 
 group :development, :test do
