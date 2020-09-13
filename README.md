@@ -1,5 +1,13 @@
 # Ruby Up!
 
+---
+
+> :warning: This project is no longer being actively developed or maintained.
+>
+> Checkout [Depfu](https://depfu.com/blog/update-your-engines) as good alternative.
+
+---
+
 The goal of this project is to automate the update of the used ruby version in multiple GitHub repositories.
 
 At the moment this is mostly a proof of concept and has a few rough edges.<br>
